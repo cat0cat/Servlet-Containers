@@ -33,7 +33,6 @@ public class PostController {
 
     public void save(Reader body, HttpServletResponse response) throws IOException {
         response.setContentType(APPLICATION_JSON);
-        final var gson = new Gson();
         final var post = gson.fromJson(body, Post.class);
         final var data = service.save(post);
         response.getWriter().print(gson.toJson(data));
@@ -45,6 +44,5 @@ public class PostController {
         service.removeById(id);
         response.getWriter().print(gson.toJson(data));
     }
-
 
 }
