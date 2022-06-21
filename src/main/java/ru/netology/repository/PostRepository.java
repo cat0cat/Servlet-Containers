@@ -5,7 +5,6 @@ import ru.netology.model.Post;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 // Stub
@@ -23,14 +22,18 @@ public class PostRepository {
     }
 
     public Post save(Post post) {
-        if (post.getId() != 0 && !posts.containsKey(post.getId())) {
-            throw new NotFoundException();
-        }
         if (post.getId() == 0) {
-            var id = idCounter.incrementAndGet();
+            long id = idCounter.incrementAndGet();
+
+            while (posts.containsKey(id))
+                id = idCounter.incrementAndGet();
+
             post.setId(id);
+            posts.put(id,post);
+        } else if (post.getId() != 0) {
+            Long currentId = post.getId();
+            posts.put(currentId, post);
         }
-        posts.put(post.getId(), post);
         return post;
     }
 
