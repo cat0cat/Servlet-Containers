@@ -30,10 +30,10 @@ public class MainServlet extends HttpServlet {
                 controller.all(resp);
                 return;
             }
-            long l = Long.parseLong(path.substring(path.lastIndexOf("/")));
             if (method.equals("GET") && path.matches("/api/posts/\\d+")) {
                 // easy way
-                controller.getById(l, resp);
+                final var id = Long.parseLong(path.substring(path.lastIndexOf("/") + 1));
+                controller.getById(id, resp);
                 return;
             }
             if (method.equals("POST") && path.equals("/api/posts")) {
@@ -42,7 +42,8 @@ public class MainServlet extends HttpServlet {
             }
             if (method.equals("DELETE") && path.matches("/api/posts/\\d+")) {
                 // easy way
-                controller.removeById(l, resp);
+                final var id = Long.parseLong(path.substring(path.lastIndexOf("/") + 1));
+                controller.removeById(id, resp);
                 return;
             }
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -54,6 +55,4 @@ public class MainServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-
 }
-
