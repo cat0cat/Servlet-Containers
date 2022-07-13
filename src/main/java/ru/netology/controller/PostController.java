@@ -45,5 +45,4 @@ public class PostController {
         response.getWriter().print(gson.toJson(data));
     }
 
-
 }
