@@ -1,25 +1,29 @@
-# Домашнее задание к занятию «2.1. Servlet Containers»
+# Домашнее задание к занятию «2.2. Dependency Lookup, Dependency Injection, IoC, Spring, Application Context»
 
-## WebApp Runner*
-
-**Важно**: выполнение данного ДЗ не влияет на получение зачёта по ДЗ.
+## DI
 
 ### Легенда
 
-Не всегда удобно "таскать" за собой полноценный Tomcat (скачивать, распаковывать его и т.д.). Достаточно часто используют библиотеку [WebApp Runner](https://github.com/heroku/webapp-runner), ранее (com.github.jsimone webapp-runner).
+В рамках лекции мы посмотрели, как использовать Spring для связывания зависимостей.
 
-Встраивание webapp-runner'а в ваш проект позволяет запускать его (проект) следующим образом: `java -jar target/dependency/webapp-runner.jar target/<appname>.war` (достаточно удобно для размещения на облачных платформах).
+Соответственно, возникает вопрос, почему бы его не использовать в вашем приложении с сервлетами и не заменить указанный ниже код на DI со Spring:
+```java
+@Override
+public void init() {
+    final var repository = new PostRepository();
+    final var service = new PostService(repository);
+    controller = new PostController(service);
+}
+```
 
 ### Задача
 
-Добавьте в свою сборку скачивание `webapp-runner`'а согласно [инструкции](https://github.com/heroku/webapp-runner#using-with-maven-in-your-project).
+Замените код в методе `init` на DI со Spring с использованием следующих методов конфигурирования бинов:
+1. Annotation Config (ветка `feature/di-annotation`)
+1. Java Config (ветка `feature/di-java`)
 
-Убедитесь, что сборка проходит и ваш war-файл действительно запускается указанной выше командой.
+Обратите внимание, что вся функциональность (CRUD), реализованная до этого, должна по-прежнему работать.
 
 ### Результат
 
-Реализуйте новую функциональность в ветке `feature/webapp-runner` вашего репозитория из предыдущего ДЗ и откройте Pull Request.
-
-В качестве результата пришлите ссылку на ваш Pull Request на GitHub в личном кабинете студента на сайте [netology.ru](https://netology.ru).
-
-После того, как ДЗ будет принято, сделайте `merge` для Pull Request'а.
+В качестве результата пришлите ссылку на ваши Pull Request'ы в личном кабинете студента на сайте [netology.ru](https://netology.ru).
