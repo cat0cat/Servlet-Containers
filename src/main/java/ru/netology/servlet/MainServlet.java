@@ -1,8 +1,10 @@
 package ru.netology.servlet;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.netology.config.JavaConfig;
 import ru.netology.controller.PostController;
 import ru.netology.exception.NotFoundException;
+
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +15,7 @@ public class MainServlet extends HttpServlet {
 
     @Override
     public void init() {
-        final var context = new AnnotationConfigApplicationContext("ru.netology");
+        final var context = new AnnotationConfigApplicationContext(JavaConfig.class);
         controller = context.getBean(PostController.class);
     }
 
@@ -31,6 +33,7 @@ public class MainServlet extends HttpServlet {
             if (method.equals("GET") && path.matches("/api/posts/\\d+")) {
                 // easy way
                 final var id = Long.parseLong(path.substring(path.lastIndexOf("/") + 1));
+
                 controller.getById(id, resp);
                 return;
             }
@@ -40,7 +43,9 @@ public class MainServlet extends HttpServlet {
             }
             if (method.equals("DELETE") && path.matches("/api/posts/\\d+")) {
                 // easy way
+
                 final var id = Long.parseLong(path.substring(path.lastIndexOf("/") + 1));
+
                 controller.removeById(id, resp);
                 return;
             }
@@ -53,6 +58,4 @@ public class MainServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-
 }
-
